@@ -53,6 +53,7 @@
 		{
 			$conn->close();
 			echo "<h3><p align='center'>T&auml;name tellimuse eest!</p></h3>";
+            echo '<script type="text/javascript">setTimeout(function(){history.back();}, 2000);</script>';
 		}
 	}
 	else {

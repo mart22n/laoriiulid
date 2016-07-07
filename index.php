@@ -11,49 +11,44 @@ $row_index = 0;
 		for($i = 0; $i < 4 && $result->num_rows > $item_index++; ++$i) {
 			$item_record = $result->fetch_assoc();
 			echo 
-				'<div class="span3 tiny" style="position:relative">
-					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href="#"><span class="big_link_span"></span></a>
-					<div class="pricing-table-header-tiny">
-						<h2>' . $item_record["nimi"] . '</h2>';
-					
+                '<div id="box">
+					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href="#"><span class="big_link_span"></span></a>';	
 			$sql = "SELECT pildi_nimi FROM Items_pictures WHERE riiuli_nimi = '".$item_record['nimi']."' ";
 			$result_items_pictures = exec_query($conn, $sql);
 			
 			if ($result_items_pictures->num_rows >= 1) {
 				$items_pictures_record = $result_items_pictures->fetch_assoc();
 				echo
-						'<img src="' . $items_pictures_record['pildi_nimi'] . '">
-					</div>';
+                    '<img class="tootepilt" src="' . $items_pictures_record['pildi_nimi'] . '">
+                    <div id="bottomtext">
+					    <h3>' . $item_record["nimi"] . '</h3>';
 			}
 			echo 
-					'<div class="pricing-table-features">
-						<p><strong>Augu laius</strong> ' . $item_record['augu_suurus'] . '</p>
-						<p><strong>Augu intervall</strong> ' . $item_record['augu_intervall'] . '</p>
-						<p><strong>Saadavus</strong> ' . $item_record["saadavus"] . '</p>
-					</div>
-					<div class="pricing-table-signup-tiny">
-					  <p><a href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '" style="position:relative; z-index: 2">Telli</a></p>
-					</div>
-				</div>';
+                        '<div id="textinfo">
+						    <p><strong>Augu laius</strong> ' . $item_record['augu_suurus'] . '</p>
+						    <p><strong>Augu intervall</strong> ' . $item_record['augu_intervall'] . '</p>
+						    <p><strong>Saadavus</strong> ' . $item_record["saadavus"] . '</p>
+					    </div>
+                        <a class="btn" href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '"><div class="buttoninside">TELLI</div></a>
+				    </div>
+                </div>';
 		}
 		echo
 			'</div>';
 	}
 	echo 
-			'<div style=" width:100%">
-				<div >
-					<img class="LoaderImage" src="ajax-loader.gif" style="display: none"/>
-				</div>
-			</div>
-			<div id="item_row_' . $row_index++ . '" class="row-fluid item-row">
+			'<div id="item_row_' . $row_index++ . '" class="row-fluid item-row">
 			</div>';
 	$conn->close();
 }
 
 ?>
-<!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Laoriiulid</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<title>Laoriiulid</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link media="screen" rel="stylesheet" type="text/css" href="style.css" />
+	<link href='http://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -63,6 +58,19 @@ $row_index = 0;
 	<link href="bootstrap-responsive.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/the-modal-master/the-modal.css" media="all" />
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<style type="text/css">
+		@-moz-document url-prefix() {
+		  .buttoninside {
+		padding-left: 25px;
+		padding-top: 6px;
+		margin-left: 105px;
+		margin-top: 38px;
+		width: 70px;
+		height: 35px;
+		background: url(images/btn.png) repeat-x;
+		}
+	}
+	</style>
 	<script type="text/javascript">// Promises 
 	var _eid_promises = {}; 
 	// Turn the incoming message from extension 
@@ -148,8 +156,9 @@ $row_index = 0;
 	<div class="row-fluid">
 
 
-			<h1>Laoriiulid</h1>
-			<h4>Kasutatud laoriiulid</h4>
+	<div id="all">
+	<div class="ylatext">Laoriiulid</div>
+	<div class="alatext">Kasutatud laoriiulid</div>
 			
 	</div>
 	<div style=" width:100%">
