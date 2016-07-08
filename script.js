@@ -64,27 +64,26 @@ function modal_link_click(clicked_id) {
 		if(req.readyState == 4 && req.status == 200) {
 			var itemRecord = req.responseText.split("\<br\>");
 			var transform = [
-				{"<>":"p","align":"right","html":""},
 				{"<>":"h3","html":"Nimi: ${nimi}"},
 				{"<>":"p","html":""},
-				{"<>":"p","align":"right","html":""},
+				{ "<>": "p", "align": "center", "html": "" },
 				{"<>":"h3","html":"Augu suurus: ${augu_suurus}"},
 				{"<>":"p","html":""},
-				{"<>":"p","align":"right","html":""},
+				{ "<>": "p", "align": "center", "html": "" },
 				{"<>":"h3","html":"Augu intervall: ${augu_intervall}"},
 				{"<>":"p","html":""},
-				{"<>":"p","align":"right","html":""},
+				{ "<>": "p", "align": "center", "html": "" },
 				{"<>":"h3","html":"Saadavus: ${saadavus}"},
 				{"<>":"p","html":""},
-				{"<>":"p","align":"right","html":""},
+				{ "<>": "p", "align": "center", "html": "" },
 				{"<>":"h3","html":[
 					{"<>":"a","href":"${link}","target":"_blank", "html":"Link"}
 				  ]},
 				{"<>":"p","html":""},
-				  {"<>":"p","align":"right","html":""},
+				  { "<>": "p", "align": "center", "html": "" },
 				  {"<>":"h3","html":"Soovitused: ${soovitused}"},
 				  {"<>":"p","html":""},
-				  {"<>":"p","align":"right","html":""},
+				  {"<>":"p","align":"center","html":""},
 				  {"<>":"h3","html":"Alternatiivid: ${alternatiivid}"},
 				  {"<>":"p","html":""}
 			  ]
@@ -151,38 +150,28 @@ function display_items_from_json_data(result, rowName) {
 	for(i = 0; i < itemRecord.length - 1; ++i) {
 		var jsonObject = JSON.parse(itemRecord[i]);
 		var item_name = jsonObject["nimi"];
-		content += "<div class=\"span3 tiny\" style=\"position:relative\">";
-		var transform = [
-			{"<>":"a","class":"modal_link","id":"modal_link_${nimi}","href":"#","html":[
-				{"<>":"span","class":"big_link_span","html":""}
-			  ]},
-			{"<>":"div","id":"${nimi}","class":"pricing-table-header-tiny","html":[
-				{"<>":"h2","html":"${nimi}"},
-				{"<>":"img","src":"${pildi_nimi}","alt":"(pilt puudub)","html":""}
-			  ]}
-		  ]
+		content += '<div id="box">';
+		var transform = 
+            [
+                {"<>":"img","src":"${pildi_nimi}","class":"tootepilt","alt":"(pilt puudub)","html":""},
+			    {"<>":"a","class":"modal_link","id":"modal_link_${nimi}","href":"#","html":[
+				    {"<>":"span","class":"big_link_span","html":""}
+			    ]},
+                { "<>": "div", "id": "bottomtext", "html": [
+                    { "<>": "h3", "html": "${nimi}" },
+                    { "<>": "div", "id": "textinfo", "html": [
+                        { "<>": "p", "html": "Augu laius: ${augu_suurus}<br>" },
+                        { "<>": "p", "html": "Augu intervall: ${augu_intervall}<br>" },
+                        { "<>": "p", "html": "Saadavus: ${saadavus}" }
+                    ]},
+                    { "<>": "a", "class": "btn", "href": "mailto:info@laomaailm.ee?Subject=${nimi}", "html": [
+                        { "<>": "div", "class": "buttoninside", "html": "TELLI" }
+                    ]}
+                ]}
+            ];
 		
 		content += json2html.transform(itemRecord[i], transform);
-		
-		content += "<div class=\"pricing-table-features\">";
-		
-		transform =		[
-			{"<>":"p","html":[
-				{"<>":"strong","html":"Augu laius "},
-				{"<>":"span","html":"${augu_suurus}"}
-			  ]},
-			{"<>":"p","html":[
-				{"<>":"strong","html":"Augu intervall "},
-				{"<>":"span","html":"${augu_intervall}"}
-			  ]},
-			{"<>":"p","html":[
-				{"<>":"strong","html":"Saadavus "},
-				{"<>":"span","html":"${saadavus}"}
-			  ]}
-		  ]
-		
-		content += json2html.transform(itemRecord[i], transform);
-		content += "</div><div class=\"pricing-table-signup-tiny\"><p><a href=\"mailto:info@laomaailm.ee\">Telli</a></p></div></div>";
+		content += "</div></div>";
 		//$(rowName).on('click', $("#modal_link_" + item_name), function() {
 		//$(".container-fluid").on('click', $("#modal_link_" + item_name), function() {
 		//	modal_link_click("modal_link_" + item_name);

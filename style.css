@@ -32,6 +32,10 @@ margin-top: 20px;
 display: inline;
 }
 
+.span3 {
+  width: 304px;
+}
+
 .buttoninside {
 padding-left: 25px;
 padding-top: 6px;
@@ -73,4 +77,73 @@ margin-right: 10%;
 line-height: 12px;
 color: #001364;
 font-weight: bold;
+}
+
+.row-fluid {
+  width: 100%;
+  *zoom: 1;
+}
+
+.row-fluid:before,
+.row-fluid:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.row-fluid:after {
+  clear: both;
+}
+
+.big_link_span { 
+  position:absolute; 
+  width:100%;
+  height:100%;
+  top:0;
+  left: 0;
+
+  z-index: 1;
+
+  /* fixes overlap error in IE7/8, 
+     make sure you have an empty gif */
+  background-image: url('empty.gif');
+}
+
+.modal {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+}
+
+.modal-header .close {
+padding: 10px;
+margin: -10px;
+}
+
+.close {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  color: #000000;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+}
+
+.close:hover,
+.close:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
 }
