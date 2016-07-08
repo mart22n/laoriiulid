@@ -64,42 +64,35 @@ function modal_link_click(clicked_id) {
 		if(req.readyState == 4 && req.status == 200) {
 			var itemRecord = req.responseText.split("\<br\>");
 			var transform = [
-				{"<>":"h3","html":"Nimi: ${nimi}"},
-				{"<>":"p","html":""},
+				{ "<>": "h3", "align": "left", "html": "Nimi: ${nimi}" },
+				{ "<>": "p", "align": "left", "html": "" },
+				{"<>":"h3","align": "left","html":"Augu suurus: ${augu_suurus}"},
 				{ "<>": "p", "align": "center", "html": "" },
-				{"<>":"h3","html":"Augu suurus: ${augu_suurus}"},
-				{"<>":"p","html":""},
+				{ "<>": "h3", "align": "left", "html": "Augu intervall: ${augu_intervall}" },
 				{ "<>": "p", "align": "center", "html": "" },
-				{"<>":"h3","html":"Augu intervall: ${augu_intervall}"},
-				{"<>":"p","html":""},
+				{ "<>": "h3", "align": "left", "html": "Saadavus: ${saadavus}" },
 				{ "<>": "p", "align": "center", "html": "" },
-				{"<>":"h3","html":"Saadavus: ${saadavus}"},
-				{"<>":"p","html":""},
-				{ "<>": "p", "align": "center", "html": "" },
-				{"<>":"h3","html":[
+				{"<>": "h3", "align": "left", "html": [
 					{"<>":"a","href":"${link}","target":"_blank", "html":"Link"}
-				  ]},
-				{"<>":"p","html":""},
-				  { "<>": "p", "align": "center", "html": "" },
-				  {"<>":"h3","html":"Soovitused: ${soovitused}"},
-				  {"<>":"p","html":""},
-				  {"<>":"p","align":"center","html":""},
-				  {"<>":"h3","html":"Alternatiivid: ${alternatiivid}"},
-				  {"<>":"p","html":""}
+				]
+				},
+				{ "<>": "p", "align": "center", "html": "" },
+				{ "<>": "h3", "align": "left", "html": "Soovitused: ${soovitused}" },
+				{"<>":"p","align":"center","html":""},
+				{ "<>": "h3", "align": "left", "html": "Alternatiivid: ${alternatiivid}" },
 			  ]
 			
 			$('#item_info_modal').json2html(itemRecord[0], transform);
 			
 			transform = [
-				{"<>":"img","src":"${pildi_nimi}","alt":"(pilt puudub)","html":""},
+				{"<>":"img","class":"modal-img","src":"${pildi_nimi}","alt":"(pilt puudub)","html":""},
 				{"<>":"br","html":""}
 			  ]
 			for(i = 1; i < itemRecord.length - 1; ++i) {
 				
 				$('#item_info_modal').json2html(itemRecord[i], transform);
 			}
-			$('#item_info_modal').append("<br><h3>Tellimiseks täida palun allolev vorm: </h3>" +
-				"<br>" +
+			$('#item_info_modal').append("<br><h3 align=\"left\">Tellimiseks täida palun allolev vorm: </h3>" +
 				"<form id=\"order_form\" class=\"pure-form pure-form-aligned\"" +
 				"action=\"order.php\" method=\"post\" target=\"_parent\">" +
 					"<fieldset>" +
@@ -123,7 +116,7 @@ function modal_link_click(clicked_id) {
 							"</div>" +
 							"<div class=\"pure-control-group\">" +
 								"<label></label>" +
-								"<button type='button' id=\"submit_button\" class=\"pure-button pure-button-primary\"><h4>Saada</h4></button>" +
+								"<button type='button' id=\"submit_button\" class=\"pure-button pure-button-primary\">Saada</button>" +
 							"</div>" +
 						"</div>" +
 					"</fieldset>" +
@@ -153,21 +146,28 @@ function display_items_from_json_data(result, rowName) {
 		content += '<div id="box">';
 		var transform = 
             [
-                {"<>":"img","src":"${pildi_nimi}","class":"tootepilt","alt":"(pilt puudub)","html":""},
-			    {"<>":"a","class":"modal_link","id":"modal_link_${nimi}","href":"#","html":[
-				    {"<>":"span","class":"big_link_span","html":""}
-			    ]},
-                { "<>": "div", "id": "bottomtext", "html": [
-                    { "<>": "h3", "html": "${nimi}" },
-                    { "<>": "div", "id": "textinfo", "html": [
-                        { "<>": "p", "html": "Augu laius: ${augu_suurus}<br>" },
-                        { "<>": "p", "html": "Augu intervall: ${augu_intervall}<br>" },
+                {"<>": "a", "class": "modal_link", "id": "modal_link_${nimi}", "href": "#", "html": [
+                    {"<>": "span", "class": "big_link_span", "html": ""}
+                ]
+                },
+                {"<>": "div", "class": "image-div", "html": [
+                    { "<>": "img", "src": "${pildi_nimi}", "class": "tootepilt", "alt": "(pilt puudub)", "html": "" }
+                ]
+                },
+                {"<>": "div", "id": "bottomtext", "html": [
+                    {"<>": "h3", "html": "${nimi}"},
+                    {"<>": "div", "id": "textinfo", "html": [
+                        {"<>": "p", "html": "Augu laius: ${augu_suurus}<br>"},
+                        {"<>": "p", "html": "Augu intervall: ${augu_intervall}<br>"},
                         { "<>": "p", "html": "Saadavus: ${saadavus}" }
-                    ]},
-                    { "<>": "a", "class": "btn", "href": "mailto:info@laomaailm.ee?Subject=${nimi}", "html": [
-                        { "<>": "div", "class": "buttoninside", "html": "TELLI" }
-                    ]}
-                ]}
+                    ]
+                    }
+                ]
+                },
+                {"<>": "a", "class": "btn", "href": "mailto:info@laomaailm.ee?Subject=${nimi}", "html": [
+                    {"<>": "div", "class": "buttoninside", "html": "TELLI"}
+                ]
+                }
             ];
 		
 		content += json2html.transform(itemRecord[i], transform);

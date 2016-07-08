@@ -7,47 +7,49 @@ $row_index = 0;
 
 	while($result->num_rows > $item_index) {
 		echo
-			'<div id="item_row_' . $row_index++ . '" class="row-fluid item-row">';
+            '<div id="item_row_' . $row_index++ . '" class="row-fluid item-row">';
 		for($i = 0; $i < 4 && $result->num_rows > $item_index++; ++$i) {
 			$item_record = $result->fetch_assoc();
 			echo 
-                '<div id="box">
-                    <div class="span3">
-					    <a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href="#"><span class="big_link_span"></span></a>';	
+			    '<div id="box">
+					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href="#"><span class="big_link_span"></span></a>';
 			$sql = "SELECT pildi_nimi FROM Items_pictures WHERE riiuli_nimi = '".$item_record['nimi']."' ";
 			$result_items_pictures = exec_query($conn, $sql);
 			
 			if ($result_items_pictures->num_rows >= 1) {
 				$items_pictures_record = $result_items_pictures->fetch_assoc();
 				echo
-                        '<img class="tootepilt" src="' . $items_pictures_record['pildi_nimi'] . '">
-                        <div id="bottomtext">
-					        <h3>' . $item_record["nimi"] . '</h3>';
-			}
-			echo 
-                            '<div id="textinfo">
-						        Augu laius: ' . $item_record['augu_suurus'] . '<br><br>
-						        Augu intervall: ' . $item_record['augu_intervall'] . '<br><br>
-						        Saadavus: ' . $item_record["saadavus"] . '
-					        </div>
-                            <a class="btn" href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '"><div class="buttoninside">TELLI</div></a>
-				        </div>
+                    '<div class="image_div"> 
+					    <img class="tootepilt" src="' . $items_pictures_record['pildi_nimi'] . '">
+			        </div>';
+            }
+			echo   
+                    '<div id="bottomtext">
+                        <h3>' . $item_record['nimi'] . '</h3>
+                        <div id="textinfo">
+						    Augu laius: ' . $item_record['augu_suurus'] . '<br><br>
+						    Augu intervall: ' . $item_record['augu_intervall'] . '<br><br>
+						    Saadavus: ' . $item_record['saadavus'] . '
+					    </div>
+					    <a class="btn" href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '">
+                            <div class="buttoninside">TELLI</div>
+                        </a>
                     </div>
-                </div>';
+				</div>';
 		}
 		echo
-			'</div>';
+            '</div>';
 	}
 	echo 
             '<div id="item_row_' . $row_index++ . '" class="row-fluid item-row">
-		</div>';
+			</div>';
 	$conn->close();
 }
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<title>Laoriiulid</title>
+<title>Laoriiulid</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link media="screen" rel="stylesheet" type="text/css" href="style.css" />
 	<link href='http://fonts.googleapis.com/css?family=Old+Standard+TT:400,400italic' rel='stylesheet' type='text/css'>
@@ -176,7 +178,7 @@ $row_index = 0;
 			</div>
 		</div>
 	</div>
-    
+
 <?php
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -207,8 +209,9 @@ $result_items = exec_query($conn, $sql);
 echo $conn->error;
 display_first_items($conn, $result_items);
 ?>
-	<div class="row-fluid">
-		<p><a href="http://www.laomaailm.ee/" target="_blank">Laomaailm.ee</a> | <a href="mailto:info@laomaailm.ee">info@laomaailm.ee</a></p>
+		<div class="row-fluid">
+			<p><h3><a href="http://www.laomaailm.ee/" target="_blank">Laomaailm.ee</a> | <a href="mailto:info@laomaailm.ee">info@laomaailm.ee</a></h3></p>
+		</div>
 	</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
