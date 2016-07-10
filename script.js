@@ -73,7 +73,7 @@ function modal_link_click(clicked_id) {
 				{ "<>": "h3", "align": "left", "html": "Saadavus: ${saadavus}" },
 				{ "<>": "p", "align": "center", "html": "" },
 				{"<>": "h3", "align": "left", "html": [
-					{"<>":"a","href":"${link}","target":"_blank", "html":"Link"}
+					{"<>":"a","class":"modal-link","href":"${link}","target":"_blank", "html":"Link"}
 				]
 				},
 				{ "<>": "p", "align": "center", "html": "" },
@@ -190,7 +190,11 @@ function btnLisa_click() {
 	 document.getElementById("pildi_nimi").innerHTML = "&Uuml;leslaetud pildid: <br>";
 }
 
-$(document).ready(function() {
+var indexPage = false;
+$(document).ready(function () {
+    if (document.location.href.match(/[^\/]+$/) == null || document.location.href.match(/[^\/]+$/)[0].substr(0, 9) == "index.php") {
+        indexPage = true;
+    }
 	$('#item_info_modal').on('click', 'button.pure-button', function() {
 		if (validateEmail($("#email").val()) == true) {
 			$('#order_form')[0].submit();
@@ -206,9 +210,9 @@ function validateEmail(email) {
 	return re.test(email);
 }
 
- var incrementInTable = 4, offsetInTable = 8, isPreviousEventComplete = true, isDataAvailable = true;
-$(window).scroll(function () {
-	if (document.location.href.match(/[^\/]+$/)[0] == "index.php" || document.location.href.match(/[^\/]+$/)[0] == "index.php#") {
+var incrementInTable = 4, offsetInTable = 8, isPreviousEventComplete = true, isDataAvailable = true;
+ $(window).scroll(function () {
+     if(indexPage == true) {
 		if ($(document).height() - 100 <= $(window).scrollTop() + $(window).height()) {
 			
 			var rows = document.getElementsByClassName("item-row");

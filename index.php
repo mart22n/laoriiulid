@@ -18,9 +18,16 @@ $row_index = 0;
 			
 			if ($result_items_pictures->num_rows >= 1) {
 				$items_pictures_record = $result_items_pictures->fetch_assoc();
-				echo
-                    '<div class="image_div"> 
+                
+                echo
+                    '<div class="image-div"> 
 					    <img class="tootepilt" src="' . $items_pictures_record['pildi_nimi'] . '">
+			        </div>';
+            }
+            else {
+                echo
+                    '<div class="image-div"> 
+					        <img class="tootepilt" alt="(pilt puudub)">
 			        </div>';
             }
 			echo   

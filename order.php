@@ -22,7 +22,7 @@
 	e-mail: " . $_POST["email"] . "<br><br>
 	
 	=====================<br>
-	Olete saanud selle e-kirja, sest Laoriiulid AS infos&uuml;steemis vormistati tellimus,
+	Olete saanud selle e-kirja, sest Laomaailm AS infos&uuml;steemis vormistati tellimus,
 	mille kontaktiks m&auml;rgiti Teie e-posti aadress. K&uuml;simuste korral p&ouml;&ouml;rduge info@laomaailm.ee.";
 	if(mail($_POST["email"], "Tellimuse kinnitus, Laomaailm AS", $msg, $headers) == true) {
 		$conn = create_conn();

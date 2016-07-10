@@ -4,7 +4,7 @@
 <title>Admin panel</title>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="style.css">
 <style>
   .hide { position:absolute; top:-1px; left:-1px; width:1px; height:1px; }
 </style>
