@@ -12,7 +12,7 @@ $row_index = 0;
 			$item_record = $result->fetch_assoc();
 			echo 
 			    '<div id="box">
-					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href="#"><span class="big_link_span"></span></a>';
+					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href=""><span class="big_link_span"></span></a>';
 			$sql = "SELECT pildi_nimi FROM Items_pictures WHERE riiuli_nimi = '".$item_record['nimi']."' ";
 			$result_items_pictures = exec_query($conn, $sql);
 			
@@ -36,7 +36,6 @@ $row_index = 0;
                         <div id="textinfo">
 						    Augu laius: ' . $item_record['augu_suurus'] . '<br><br>
 						    Augu intervall: ' . $item_record['augu_intervall'] . '<br><br>
-						    Saadavus: ' . $item_record['saadavus'] . '
 					    </div>
 					    <a class="btn" href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '">
                             <div class="buttoninside">TELLI</div>
@@ -75,7 +74,7 @@ $row_index = 0;
 		padding-left: 25px;
 		padding-top: 6px;
 		margin-left: 105px;
-		margin-top: 38px;
+		margin-top: 13px;
 		width: 70px;
 		height: 35px;
 		background: url(images/btn.png) repeat-x;
@@ -163,24 +162,28 @@ $row_index = 0;
     <div class="modal" id="item_info_modal" style="display: none">
         <a href="#" class="close">×</a>
     </div>
-	<div class="ylatext">Laoriiulid</div>
-	<div class="alatext">Kasutatud laoriiulid</div>
+	<div class="ylatext"><center>Laoriiulid</center></div>
+	<div class="alatext"><center>Kasutatud laoriiulid</center>
+Laoriiulid lehelt leiate Eestis enamlevinud laoriiulite pildid ja andmed, mille abil on lihtne tuvastada riiuli tootjat ja marki.
+Kuna paljusid riiuleid on võimalik osta ka kasutatuna, siis on suur võimalus leida vajadusel puuduvaid detaile või täiendada olemasolevat riiulit.
+Kui Te riiulit siiski nimekirjast ei leia, saatke päring ja püüame selle tuvastada.
+</div>
 			
 	<div style=" width:100%">
 		<div style="margin:0 auto; display: table;">
 			<div style="display:table-cell;">
-				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action="index.php" method="post">
-					<button name="#hashtag1" type="submit" class="pure-button pure-button-primary">#hashtag1</button>
+				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag1; ?>  method="post">
+					<button name=<?php echo hashtag1; ?> type="submit" class="pure-button pure-button-primary"><?php echo hashtag1; ?></button>
 				</form>
 			</div>
 			<div style="display:table-cell;"> 
-				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action="index.php" method="post">
-					<button name="#hashtag2" type="submit" class="pure-button pure-button-primary">#hashtag2</button>
+				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag2; ?> method="post">
+					<button name=<?php echo hashtag2; ?> type="submit" class="pure-button pure-button-primary"><?php echo hashtag2; ?></button>
 				</form>
 			</div>
 			<div style="display:table-cell;">   
-				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action="index.php" method="post">
-					<button name="#hashtag3" type="submit" class="pure-button pure-button-primary">#hashtag3</button>
+				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag3; ?> method="post">
+					<button name=<?php echo hashtag3; ?> type="submit" class="pure-button pure-button-primary"><?php echo hashtag3; ?></button>
 				</form>
 			</div>
 		</div>
@@ -193,23 +196,22 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
 
-$currently_displayed_item_count = 8;
-if(isset($_POST["#hashtag1"])) {
-    $hashtag = $_POST["#hashtag1"];
-    $sql = "SELECT * FROM Items WHERE hashtag = '#hashtag1' LIMIT " . $currently_displayed_item_count . "";
+if(isset($_POST[hashtag1])) {
+    $hashtag = $_POST[hashtag1];
+    $sql = "SELECT * FROM Items WHERE hashtag = '" . hashtag1 . "' LIMIT " . currently_displayed_item_count . "";
 }
 
-else if(isset($_POST["#hashtag2"])) {
-    $hashtag = $_POST["#hashtag2"];
-    $sql = "SELECT * FROM Items WHERE hashtag = '#hashtag2' LIMIT " . $currently_displayed_item_count . "";
+else if(isset($_POST[hashtag2])) {
+    $hashtag = $_POST[hashtag2];
+    $sql = "SELECT * FROM Items WHERE hashtag = '" . hashtag2 . "' LIMIT " . currently_displayed_item_count . "";
 }
 
-else if(isset($_POST["#hashtag3"])) {
-    $hashtag = $_POST["#hashtag3"];
-    $sql = "SELECT * FROM Items WHERE hashtag = '#hashtag3' LIMIT " . $currently_displayed_item_count . "";
+else if(isset($_POST[hashtag3])) {
+    $hashtag = $_POST[hashtag3];
+    $sql = "SELECT * FROM Items WHERE hashtag = '" . hashtag3 . "' LIMIT " . currently_displayed_item_count . "";
 }
 else {
-    $sql = "SELECT * FROM Items LIMIT " . $currently_displayed_item_count . "";
+    $sql = "SELECT * FROM Items LIMIT " . currently_displayed_item_count . "";
 }
 
 $result_items = exec_query($conn, $sql);
