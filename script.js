@@ -1,4 +1,4 @@
-var activeHashTag="";
+const LISA_UUS = "LISA UUS...";
 
 function upload()
 {
@@ -19,21 +19,21 @@ var checkComplete = function(timeoutCounter)
 	timeoutCounter++;
 	var iFrame = document.getElementById("hiddenFrame").contentDocument.getElementsByTagName("body")[0];
 	 
-	if(iFrame.innerHTML == "")
+	if(iFrame.innerHTML === "")
 	{
-		setTimeout ( function() { checkComplete(timeoutCounter) }, 500);
+		setTimeout ( function() { checkComplete(timeoutCounter); }, 500);
 	}
 	else
 	{
-		document.getElementById("upload_button").value = "Lae pilt üles";
-		document.getElementById("upload_button").disabled = false;
-		document.getElementById("add_item").disabled = false;
+		$("#upload_button").value = "Lae pilt üles";
+		$("#upload_button").prop("disabled", false);
+		$("#add_item").prop("disabled", false);
 		if(iFrame.innerHTML == "success ")
 		{
-			var fileinfo = document.getElementById("fileToUpload");
+			var fileinfo = $("#fileToUpload");
 			if ('files' in fileinfo) {
 				if (fileinfo.files.length > 0) {
-					document.getElementById("pildi_nimi").innerHTML += fileinfo.files[0].name + "<br>";
+					$("#picture_names").append(fileinfo.files[0].name + "<br>");
 				}
 			}
 			return 0;
@@ -235,7 +235,7 @@ function display_items_from_json_data(result, rowName) {
 }
 
 function btnLisa_click() {
-	 document.getElementById("pildi_nimi").innerHTML = "&Uuml;leslaetud pildid: <br>";
+	 $("#picture_names").val("&Uuml;leslaetud pildid: <br>");
 }
 
 function getHashTagFromUri() {
@@ -256,7 +256,67 @@ $(document).ready(function () {
 			alert('e-mailiaadress ei vasta nõuetele!');
 		}
 	});
+	
+	$('#change_item').prop("disabled", true);
+	$('#delete_item').prop("disabled", true);
+	$('#nimi').change(function() {
+		var name = $('#nimi').val();
+		if(name !== LISA_UUS) {
+			$('#add_item').prop("disabled", true);
+			$('#change_item').prop("disabled", false);
+			$('#delete_item').prop("disabled", false);
+			downloadExistingItemFields(name);
+		}
+		else
+		{
+			$('#add_item').prop("disabled", false);
+			$('#change_item').prop("disabled", true);
+			$('#delete_item').prop("disabled", true);
+			$('#augu_suurus').val('');
+			$('#augu_intervall').val('');
+			$('#saadavus').val('');
+			$('#link').val('');
+			$('#link_vaata_saadavust').val('');
+			$('#hashtag').val('');
+			$('#soovitused').val('');
+			$('#alternatiivid').val('');
+		}
+	});
 });
+
+function downloadExistingItemFields(name) {
+	$.ajax({
+		type: "POST",
+		url:  'get_item_record_by_name.php',
+		data: { 'nimi': name },
+		success: function (result) {
+			fillFormFieldsFromItemRecord(result);
+		},
+		error: function (error) {
+			alert(error);
+		}	
+	});
+}
+
+function fillFormFieldsFromItemRecord(record) {
+	var itemData = record.split("\<br\>");
+	var jsonObject = JSON.parse(itemData[0]);
+	$('#augu_suurus').val(jsonObject.augu_suurus);
+	$('#augu_intervall').val(jsonObject.augu_intervall);
+	$('#saadavus').val(jsonObject.saadavus);
+	$('#link').val(jsonObject.link);
+	$('#link_vaata_saadavust').val(jsonObject.link_vaata_saadavust);
+	$('#hashtag').val(jsonObject.hashtag);
+	$('#soovitused').val(jsonObject.soovitused);
+	$('#alternatiivid').val(jsonObject.alternatiivid);
+	$("#picture_names").html("&Uuml;leslaetud pildid: <br>");
+	var i;
+	for(i = 1; i < itemData.length - 1; ++i)
+	{
+		jsonObject = JSON.parse(itemData[i]);
+		$("#picture_names").append(jsonObject.pildi_nimi + "<br>");	
+	}
+}
 
 function validateEmail(email) {
 	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

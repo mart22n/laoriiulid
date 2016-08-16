@@ -12,27 +12,40 @@
 	<body>
 		<div style="width: 100%; display: table;">
 			<div style="display: table-row">
-				<div style="width: 750px; display: table-cell;"> 
+				<div style="width: 750px; display: table-cell;">
+					<h4>Toote lisamiseks, muutmiseks või kustutamiseks vali esmalt toode "Toote nimi" alt:</h4>
 					<form class="pure-form pure-form-aligned" action="add_item.php" method="post" target="hiddenFrame">
 						<fieldset>
 							<div class="pure-control-group">
 								<label>Toote nimi</label>
-								<input name="nimi" type="text" placeholder="Toote nimi" required>
+								<select id="nimi">
+									<option><h3>LISA UUS...</h3></option>
+									<?php
+										$conn = create_conn();
+										$sql = "SELECT nimi FROM Items ORDERBY ";
+										$result = exec_query($conn, $sql);
+										if ($result->num_rows >= 1) {
+											while($row = $result->fetch_assoc()) {
+												echo '<option>' . $row['nimi'] . '</option>';
+											}
+										}
+									?>
+								</select>
 							</div>
 
 							<div class="pure-control-group">
 								<label>Augu suurus</label>
-								<input name="augu_suurus" type="text" placeholder="Augu suurus" required>
+								<input id="augu_suurus" type="text" placeholder="Augu suurus" required>
 							</div>
 
 							<div class="pure-control-group">
 								<label>Augu intervall</label>
-								<input name="augu_intervall" type="text" placeholder="Augu intervall" required>
+								<input id="augu_intervall" type="text" placeholder="Augu intervall" required>
 							</div>
 
 							<div class="pure-control-group">
 								<label>Saadavus</label>
-								<select name="saadavus">
+								<select id="saadavus">
 									<option>Laos olemas</option>
 									<option>Tellimisel</option>
 								</select>
@@ -40,17 +53,17 @@
 												
 							<div class="pure-control-group">
 								<label>Link  http://</label>
-								<input name="link" type="text" placeholder="Link">
+								<input id="link" type="text" placeholder="Link">
 							</div>
 							
 							<div class="pure-control-group">
 								<label>"Vaata saadavust" link  http://</label>
-								<input class="pure-input-2-3" name="link_vaata_saadavust" type="text" placeholder="Link, mis avaneb, kui vajutada nupul VAATA SAADAVUST" 									required>
+								<input class="pure-input-2-3" id="link_vaata_saadavust" type="text" placeholder="Link, mis avaneb, kui vajutada nupul VAATA SAADAVUST" 									required>
 							</div>	
 							
 							<div class="pure-control-group">
 								<label>Kategooria</label>
-								<select name="hashtag">
+								<select id="hashtag">
 									<option>#kaubariiul</option>
 									<option>#moodulriiul</option>
 									<option>#konsoolriiul</option>
@@ -59,17 +72,20 @@
 								
 							<div class="pure-control-group">
 								<label>Soovitused</label>
-								<textarea name="soovitused" placeholder="Soovitused"></textarea>
+								<textarea id="soovitused" placeholder="Soovitused"></textarea>
 							</div>	
 							
 							<div class="pure-control-group">
 								<label>Alternatiivid</label>
-								<textarea name="alternatiivid" placeholder="Alternatiivid"></textarea>
+								<textarea id="alternatiivid" placeholder="Alternatiivid"></textarea>
 							</div>
 
 							<div class="pure-control-group">
 							<label></label>
-							<button id="add_item" type="submit" class="pure-button pure-button-primary" onclick="btnLisa_click()">Lisa!</button>
+							<button id="add_item" type="submit" class="pure-button pure-button-primary" onclick="btnLisa_click()">Lisa</button>
+							<button id="change_item" type="submit" class="pure-button pure-button-primary" onclick="btnLisa_click()">Muuda</button>
+							<button id="delete_item" type="submit" class="pure-button pure-button-primary" onclick="btnLisa_click()">Kustuta</button>
+							<button id="delete_all" type="submit" class="pure-button pure-button-primary" onclick="btnLisa_click()">Kustuta kõik riiulid</button>
 							</div>	
 							
 						</fieldset>
@@ -77,19 +93,25 @@
 				</div>
 				<div style="display: table-cell;">
 					<div class="container">
-						<label><b>Lisa pilte (j&auml;rgmise pildi lisamiseks vajuta nuppu "sirvi/lehitse")</b></label>
-						<br>
+						<h4>Lisa pilte (pildi lisamiseks vajuta esmalt nuppu "sirvi/lehitse/browse", seejärel nuppu "Lae pilt üles")</h4>
 						<br>
 						<br>
 						<form id="upload" method="post" action="upload.php" enctype="multipart/form-data" target="hiddenFrame">
-							<div id="drop">
+							<div id="drop" style="margin-left: 30px;">
 								<input type="file" name="fileToUpload" id="fileToUpload"/>
 								<!-- <button type="submit" class="pure-button pure-button-primary" name="submit">Lae &uumlles!</button> -->
 								<input type="button"  class="pure-button  pure-button-primary" id="upload_button" value="Lae pilt &uuml;les" onclick="upload();"/>
 								<br>
-                                <br>
-                                <div id="pildi_nimi">&Uuml;leslaetud pildid: <br></div>
+								<br>
+                                <div id="picture_names">&Uuml;leslaetud pildid: <br></div>
                                 <iframe id="hiddenFrame" name="hiddenFrame" class="hide"></iframe>
+								<br>
+								<div>
+								<p style="float: left;">Kustuta kõik antud riiuli pildid:</p>
+								<input type="button" style="margin-left: 10px;" class="pure-button  pure-button-primary" id="delete_pictures_button" value="Kustuta" onclick="upload();"/>
+								</div>
+								<br>
+                                <br>
 							</div>
 						</form>
 					</div>

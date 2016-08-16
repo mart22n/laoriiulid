@@ -3,7 +3,7 @@ require './common.php';
 
 $conn = create_conn();
 
-$sql = "SELECT nimi, augu_suurus, augu_intervall, saadavus, link, soovitused, alternatiivid FROM Items WHERE nimi= '".$_POST['nimi']."'";
+$sql = "SELECT nimi, augu_suurus, augu_intervall, saadavus, link, link_vaata_saadavust, hashtag, soovitused, alternatiivid FROM Items WHERE nimi= '".$_POST['nimi']."'";
 
 $result = exec_query($conn, $sql);
 
