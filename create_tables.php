@@ -40,9 +40,9 @@ if (!$result) {
 $sql = "CREATE TABLE Tellimused (
 id INT(6) PRIMARY KEY AUTO_INCREMENT,
 riiuli_nimi VARCHAR(30) NOT NULL,
-eesnimi VARCHAR(30) NOT NULL,
-perenimi VARCHAR(30) NOT NULL,
+nimi VARCHAR(30) NOT NULL,
 email VARCHAR(30) NOT NULL,
+telefon VARCHAR(15),
 timestamp TIMESTAMP NOT NULL,
 FOREIGN KEY (riiuli_nimi) REFERENCES Items(riiuli_nimi)
 )";

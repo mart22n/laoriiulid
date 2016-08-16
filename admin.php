@@ -80,7 +80,7 @@
 							<div id="drop">
 								<input type="file" name="fileToUpload" id="fileToUpload"/>
 								<!-- <button type="submit" class="pure-button pure-button-primary" name="submit">Lae &uumlles!</button> -->
-								<input type="button"  class="pure-button  pure-button-primary" id="upload_button" value="Lae pilt &uuml;les" onclick="upload()"/>
+								<input type="button"  class="pure-button  pure-button-primary" id="upload_button" value="Lae pilt &uuml;les" onclick="upload();"/>
 								<br>
                                 <br>
                                 <div id="pildi_nimi">&Uuml;leslaetud pildid: <br></div>

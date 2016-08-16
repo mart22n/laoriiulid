@@ -12,7 +12,7 @@ $row_index = 0;
 			$item_record = $result->fetch_assoc();
 			echo 
 			    '<div id="box">
-					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href=""><span class="big_link_span"></span></a>';
+					<a class="modal_link" onClick="modal_link_click(this.id)" id="modal_link_' . $item_record["nimi"] . '" href="#"><span class="big_link_span"></span></a>';
 			$sql = "SELECT pildi_nimi FROM Items_pictures WHERE riiuli_nimi = '".$item_record['nimi']."' ";
 			$result_items_pictures = exec_query($conn, $sql);
 			
@@ -30,12 +30,14 @@ $row_index = 0;
 					        <img class="tootepilt" alt="(pilt puudub)">
 			        </div>';
             }
+			$link_paragraph = (strlen($item_record['link']) > 7 ? '<p>Link: <a class="item-link" href=' . $item_record['link'] . ' target="_blank">' . $item_record['link'] . '</a></p>': '<p><br></p>');
 			echo   
                     '<div id="bottomtext">
                         <h3>' . $item_record['nimi'] . '</h3>
                         <div id="textinfo">
-						    Augu laius: ' . $item_record['augu_suurus'] . '<br><br>
-						    Augu intervall: ' . $item_record['augu_intervall'] . '<br><br>
+						    <p>Augu laius: ' . $item_record['augu_suurus'] . '<br></p>
+						    <p>Augu intervall: ' . $item_record['augu_intervall'] . '<br></p>
+							' . $link_paragraph . '
 					    </div>
 					    <a class="btn" href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '">
                             <div class="buttoninside">TELLI</div>
@@ -172,18 +174,18 @@ Kui Te riiulit siiski nimekirjast ei leia, saatke päring ja püüame selle tuva
 	<div style=" width:100%">
 		<div style="margin:0 auto; display: table;">
 			<div style="display:table-cell;">
-				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag1; ?>  method="post">
-					<button name=<?php echo hashtag1; ?> type="submit" class="pure-button pure-button-primary"><?php echo hashtag1; ?></button>
+				<form id="<?php echo hashtag1; ?>" style="margin:auto 3px;" class="pure-form pure-form-aligned"  action=<?php echo $_SERVER['REQUEST_URI'] . hashtag1; ?> method="post">
+					<button name=<?php echo hashtag1; ?> type="submit" class="pure-button pure-button-primary" onclick="hashtag_click(<?php echo hashtag1; ?>)"><?php echo hashtag1; ?></button>
 				</form>
 			</div>
 			<div style="display:table-cell;"> 
-				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag2; ?> method="post">
-					<button name=<?php echo hashtag2; ?> type="submit" class="pure-button pure-button-primary"><?php echo hashtag2; ?></button>
+				<form id="<?php echo hashtag2; ?>" style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag2; ?> method="post">
+					<button name=<?php echo hashtag2; ?> type="submit" class="pure-button pure-button-primary" onclick="hashtag_click(<?php echo hashtag2; ?>)"><?php echo hashtag2; ?></button>
 				</form>
 			</div>
 			<div style="display:table-cell;">   
-				<form style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag3; ?> method="post">
-					<button name=<?php echo hashtag3; ?> type="submit" class="pure-button pure-button-primary"><?php echo hashtag3; ?></button>
+				<form id="<?php echo hashtag3; ?>" style="margin:auto 3px;" class="pure-form pure-form-aligned" action=<?php echo $_SERVER['REQUEST_URI'] . hashtag3; ?> method="post">
+					<button name=<?php echo hashtag3; ?> type="submit" class="pure-button pure-button-primary" onclick="hashtag_click(<?php echo hashtag3; ?>)"><?php echo hashtag3; ?></button>
 				</form>
 			</div>
 		</div>
@@ -194,7 +196,7 @@ Kui Te riiulit siiski nimekirjast ei leia, saatke päring ja püüame selle tuva
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-} 
+}
 
 if(isset($_POST[hashtag1])) {
     $hashtag = $_POST[hashtag1];

@@ -4,6 +4,7 @@ define("hashtag1", "#hashtag1");
 define("hashtag2", "#hashtag2");
 define("hashtag3", "#hashtag3");
 define("currently_displayed_item_count", "12");
+$active_hashtag = "";
 
 date_default_timezone_set("Europe/Tallinn");
 error_reporting(-1);

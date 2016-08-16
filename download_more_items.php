@@ -3,7 +3,7 @@ require './common.php';
 
 $conn = create_conn();
 
-$sql = "SELECT * FROM Items LIMIT ".$_GET['offsetInTable'].", ".$_GET['incrementInTable']."";
+$sql = (strlen($_GET['hashtag']) > 0 ? "SELECT * FROM Items WHERE hashtag = '".$_GET['hashtag']."' LIMIT ".$_GET['offsetInTable'].", ".$_GET['incrementInTable']."" : "SELECT * FROM Items LIMIT ".$_GET['offsetInTable'].", ".$_GET['incrementInTable']."");
 
 $result = exec_query($conn, $sql);
 

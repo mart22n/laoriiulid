@@ -71,7 +71,7 @@ position:relative;
 padding-left: 25px;
 padding-top: 6px;
 margin-left: 105px;
-margin-top: 13px;
+margin-top: 33px;
 width: 70px;
 height: 35px;
 background: url(images/btn.png) repeat-x;
@@ -105,6 +105,7 @@ color: #001364;
 font-size: 12px;
 margin-left: 10%;
 margin-right: 10%;
+margin-bottom: 43px;
 line-height: 12px;
 color: #001364;
 font-weight: bold;
@@ -323,4 +324,14 @@ ul
 
 select {
     height: 40px !important;
+}
+
+.item-link {
+  z-index: 4 !important;
+  position: relative;
+}
+
+.item-link:hover {
+  text-decoration: underline;
+  color: #002ded;
 }

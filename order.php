@@ -7,7 +7,9 @@
 	$headers .= 'Reply-To: info@laomaailm.ee' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
 	
-	$msg = "" . $_POST["eesnimi"] . " " . $_POST["perenimi"] . ", t&auml;name tellimuse eest. Tellimus on edastatud Laomaailm AS-le.<br><br>
+	$phonePartOfMsg = (strlen($_POST["phone"]) > 0 ? "telefon: " . $_POST["phone"] . "<br><br>" : "<br>");
+	
+	$msg = "" . $_POST["nimi"] . ", t&auml;name tellimuse eest. Tellimus on edastatud Laomaailm AS-le.<br><br>
 	
 	<b>Tellimuse detailid:</b><br>
 	tellimuse esitamise aeg: " . date("j.m.Y G:i:s", time()) . "<br>
@@ -18,9 +20,9 @@
 	link: " . $_POST["link"] . "<br><br>
 	
 	<b>Tellija andmed:</b><br>
-	nimi: " . $_POST["eesnimi"] . " " . $_POST["perenimi"] . "<br>
-	e-mail: " . $_POST["email"] . "<br><br>
-	
+	nimi: " . $_POST["nimi"] . "<br>
+	e-mail: " . $_POST["email"] . "<br>
+	" . $phonePartOfMsg . "
 	=====================<br>
 	Olete saanud selle e-kirja, sest Laomaailm AS infos&uuml;steemis vormistati tellimus,
 	mille kontaktiks m&auml;rgiti Teie e-posti aadress. K&uuml;simuste korral p&ouml;&ouml;rduge info@laomaailm.ee.";
@@ -30,21 +32,21 @@
 		$riiuli_nimi = $_POST["riiuli_nimi"]; 
 		$riiuli_nimi = $conn->real_escape_string($riiuli_nimi);
 		
-		$eesnimi = $_POST["eesnimi"]; 
-		$eesnimi = $conn->real_escape_string($eesnimi);
-		
-		$perenimi = $_POST["perenimi"]; 
-		$perenimi = $conn->real_escape_string($perenimi);
+		$nimi = $_POST["nimi"]; 
+		$nimi = $conn->real_escape_string($nimi);
 		
 		$email = $_POST["email"]; 
 		$email = $conn->real_escape_string($email);
 		
-		$sql = "INSERT INTO Tellimused (riiuli_nimi, eesnimi, perenimi, email, timestamp)
-		VALUES ('$riiuli_nimi', '$eesnimi', '$perenimi', '$email', 'time()')";
+		$phone = $_POST["phone"]; 
+		$phone = $conn->real_escape_string($phone);
+		
+		$sql = "INSERT INTO Tellimused (riiuli_nimi, nimi, email, telefon, timestamp)
+		VALUES ('$riiuli_nimi', '$nimi', '$email', '$phone', 'time()')";
 		
 		exec_query($conn, $sql);
 		if(strlen($conn->error) > 0) {
-			echo '<script type="text/javascript">alert("Viga: tellimuse vormistamine eba&ouml;nnestus. (' . $conn->error . ')");</script>';
+			echo '<script type="text/javascript">alert("Viga: tellimuse vormistamine eba&otilde;nnestus. (' . $conn->error . ')");</script>';
 			$conn->close();
 			exit_nicely($conn->error, 1);
 			
@@ -52,11 +54,19 @@
 		else
 		{
 			$conn->close();
-			echo "<h3><p align='center'>T&auml;name tellimuse eest!</p></h3>";
-            echo '<script type="text/javascript">setTimeout(function(){history.back();}, 2000);</script>';
+			echo "<h3><p align='center'>Tere, t&auml;name, et olete esitanud Laomaailmale p&auml;ringu toote " . $_POST["riiuli_nimi"] . " kohta. </p><br><br>
+			<p>Edastatud on j&auml;rgnev:</p>";
+			echo "<p>Soovin infot toote " . $_POST["riiuli_nimi"] . " kohta. <br><br>Nimi: " . $_POST["nimi"] . "<br><br>E-mail: " .
+			$_POST["email"] . "<br><br>" . $phonePartOfMsg . "Lisainfo: " . $_POST["lisainfo"] . "</p></h3>";
+            echo '<button class="pure-button pure-button-primary" style="margin-left: 30px;" onclick="history.go(-1);">Tagasi</button>';
 		}
 	}
 	else {
-		echo '<script type="text/javascript">alert("Viga: tellimuse kinnitus-meili saatmine eba&ouml;nnestus. Palun saada tellimus meiliaadressile info@laomaailm.ee");</script>';
+		echo '<script type="text/javascript">alert("Viga: tellimuse kinnitus-meili saatmine eba&otilde;nnestus. Palun saada tellimus meiliaadressile info@laomaailm.ee");</script>';
 	}
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<title>Tellimuse kinnitus - Laomaailm AS</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+<link rel="stylesheet" href="style.css" type="text/css">
