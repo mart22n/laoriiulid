@@ -15,6 +15,10 @@ $link = $_POST["link"];
 $link = "http://" . $link;
 $link = $conn->real_escape_string($link);
 
+$link_vt = $_POST["link_vaata_saadavust"]; 
+$link_vt = "http://" . $link_vt;
+$link_vt = $conn->real_escape_string($link_vt);
+
 $hashtag = $_POST["hashtag"];
 
 $soovitused = $_POST["soovitused"]; 
@@ -25,12 +29,12 @@ $alternatiivid = $conn->real_escape_string($alternatiivid);
 
 if(isset($_SESSION["filenames"]) && count($_SESSION["filenames"] > 0)) {
 	$filename = $_SESSION["filenames"][0];
-	$sql = "INSERT INTO Items (nimi, augu_suurus, augu_intervall, saadavus, link, hashtag, soovitused, alternatiivid, pildi_nimi) VALUES ('$nimi', '$augu_suurus', '$augu_intervall',
-	'$saadavus', '$link', '$hashtag', '$soovitused', '$alternatiivid', '$filename')";
+	$sql = "INSERT INTO Items (nimi, augu_suurus, augu_intervall, saadavus, link, link_vaata_saadavust, hashtag, soovitused, alternatiivid, pildi_nimi) VALUES ('$nimi', '$augu_suurus', '$augu_intervall',
+	'$saadavus', '$link', '$link_vt', '$hashtag', '$soovitused', '$alternatiivid', '$filename')";
 }
 else {
-	$sql = "INSERT INTO Items (nimi, augu_suurus, augu_intervall, saadavus, link, hashtag, soovitused, alternatiivid) VALUES ('$nimi', '$augu_suurus', '$augu_intervall',
-	'$saadavus', '$link', '$hashtag', '$soovitused', '$alternatiivid')";
+	$sql = "INSERT INTO Items (nimi, augu_suurus, augu_intervall, saadavus, link, link_vaata_saadavust, hashtag, soovitused, alternatiivid) VALUES ('$nimi', '$augu_suurus', '$augu_intervall',
+	'$saadavus', '$link', '$link_vt', '$hashtag', '$soovitused', '$alternatiivid')";
 }
 
 exec_query($conn, $sql);

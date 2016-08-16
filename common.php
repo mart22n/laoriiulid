@@ -1,10 +1,11 @@
 <?php
 
-define("hashtag1", "#hashtag1");
-define("hashtag2", "#hashtag2");
-define("hashtag3", "#hashtag3");
+define("hashtag1", "#kaubariiul");
+define("hashtag2", "#moodulriiul");
+define("hashtag3", "#konsoolriiul");
 define("currently_displayed_item_count", "12");
-$active_hashtag = "";
+define ("laomaailm_email_addr", "martin.treufeld@mail.ee");
+define ("admin_email_addr", "ottle2010@gmail.com");
 
 date_default_timezone_set("Europe/Tallinn");
 error_reporting(-1);

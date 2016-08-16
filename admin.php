@@ -12,7 +12,7 @@
 	<body>
 		<div style="width: 100%; display: table;">
 			<div style="display: table-row">
-				<div style="width: 600px; display: table-cell;"> 
+				<div style="width: 750px; display: table-cell;"> 
 					<form class="pure-form pure-form-aligned" action="add_item.php" method="post" target="hiddenFrame">
 						<fieldset>
 							<div class="pure-control-group">
@@ -41,14 +41,19 @@
 							<div class="pure-control-group">
 								<label>Link  http://</label>
 								<input name="link" type="text" placeholder="Link">
+							</div>
+							
+							<div class="pure-control-group">
+								<label>"Vaata saadavust" link  http://</label>
+								<input class="pure-input-2-3" name="link_vaata_saadavust" type="text" placeholder="Link, mis avaneb, kui vajutada nupul VAATA SAADAVUST" 									required>
 							</div>	
 							
 							<div class="pure-control-group">
-								<label>Hashtag</label>
+								<label>Kategooria</label>
 								<select name="hashtag">
-									<option>#hashtag1</option>
-									<option>#hashtag2</option>
-									<option>#hashtag3</option>
+									<option>#kaubariiul</option>
+									<option>#moodulriiul</option>
+									<option>#konsoolriiul</option>
 								</select>
 							</div>
 								

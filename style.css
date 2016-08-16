@@ -30,12 +30,29 @@ p {
 line-height: 10px;
 }
 
-.btn {
+.abbreviated-link {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.abbreviated-link-in-modal {
+  line-height: 150%;
+}
+
+.button-form {
     color: #fff !important;
     font-weight: bold;
     text-decoration: none;
     z-index:3 !important;
     position: relative;
+    width: 60%;
+    margin: 0 auto; 
+}
+
+.check-availability-button {
+    width: 100%;
+    margin: 0 auto; 
 }
 
 a {
@@ -72,7 +89,7 @@ padding-left: 25px;
 padding-top: 6px;
 margin-left: 105px;
 margin-top: 33px;
-width: 70px;
+width: 150px;
 height: 35px;
 background: url(images/btn.png) repeat-x;
 }
@@ -93,10 +110,25 @@ color: #001364;
 font-size: 16px;
 font-weight: bold;
 margin-bottom: 20px;
+margin-left: 20px;
+margin-right: 20px;
 }
 
 h3 {
 font-size: 18px;
+margin-left: 30px;
+color: #001364;
+}
+
+h2 {
+font-size: 26px;
+margin-left: 30px;
+color: #001364;
+font-weight: bold;
+}
+
+h4 {
+font-size: 14px;
 margin-left: 30px;
 color: #001364;
 }

@@ -30,7 +30,7 @@ $row_index = 0;
 					        <img class="tootepilt" alt="(pilt puudub)">
 			        </div>';
             }
-			$link_paragraph = (strlen($item_record['link']) > 7 ? '<p>Link: <a class="item-link" href=' . $item_record['link'] . ' target="_blank">' . $item_record['link'] . '</a></p>': '<p><br></p>');
+			$link_paragraph = (strlen($item_record['link']) > 7 ? '<p class="abbreviated-link">Link: <a class="item-link" href=' . $item_record['link'] . ' target="_blank">' . $item_record['link'] . '</a></p>': '<p><br></p>');
 			echo   
                     '<div id="bottomtext">
                         <h3>' . $item_record['nimi'] . '</h3>
@@ -39,9 +39,9 @@ $row_index = 0;
 						    <p>Augu intervall: ' . $item_record['augu_intervall'] . '<br></p>
 							' . $link_paragraph . '
 					    </div>
-					    <a class="btn" href="mailto:info@laomaailm.ee?Subject=' . $item_record["nimi"] . '">
-                            <div class="buttoninside">TELLI</div>
-                        </a>
+					    <form class="button-form" action="' . $item_record['link_vaata_saadavust'] . '" target="_blank">
+                            <button class="check-availability-button pure-button pure-button-primary">VAATA SAADAVUST</button>
+                        </form>
                     </div>
 				</div>';
 		}
@@ -221,7 +221,7 @@ echo $conn->error;
 display_first_items($conn, $result_items);
 ?>
 		<div class="row-fluid">
-			<p><h3><a href="http://www.laomaailm.ee/" target="_blank">Laomaailm.ee</a> | <a href="mailto:info@laomaailm.ee">info@laomaailm.ee</a></h3></p>
+			<p><h4>Laoriiulid.ee haldab Laomaailma AS<br>Telefon 659 30 50, <a href="mailto:info@laomaailm.ee">info@laomaailm.ee</a></h4>			</p>
 		</div>
 	</div>
 

@@ -4,8 +4,10 @@
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	$headers .= 'From: Laomaailm AS <info@laomaailm.ee>' . "\r\n";
-	$headers .= 'Reply-To: info@laomaailm.ee' . "\r\n" .
-    'X-Mailer: PHP/' . phpversion();
+	$headers .= 'Reply-To: info@laomaailm.ee' . "\r\n";
+	$headers .= 'Cc:' . laomaailm_email_addr . "\r\n";
+	$headers .= 'Cc:' . admin_email_addr . "\r\n";
+    $headers .= 'X-Mailer: PHP/' . phpversion();
 	
 	$phonePartOfMsg = (strlen($_POST["phone"]) > 0 ? "telefon: " . $_POST["phone"] . "<br><br>" : "<br>");
 	

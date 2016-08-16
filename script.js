@@ -73,27 +73,44 @@ function modal_link_click(clicked_id) {
 			
 			// if link string contains dot, we probably have a non-empty link url
 			var linkTransformArray = (stringContainsDot(itemDetails[4]) ? [
-				{"<>": "h3", "align": "left", "html": [
-					{"<>":"a","class":"modal-link","href":"${link}","target":"_blank", "html":"Link: ${link}"}
+				{
+					"<>": "h4", "align": "left", "html":
+					[
+						{
+							"<>":"p", "class": "abbreviated-link abbreviated-link-in-modal", "html":
+							[
+								{
+									"<>": "span", "html": "Link: "
+								},
+								{
+									"<>":"a","class":"modal-link","href":"${link}","target":"_blank", "html":"${link}"
+								},
+							]
+						}
 					]
-					},
-					{ "<>": "p", "align": "center", "html": "" }
+				},
+				{
+					"<>": "p", "align": "center", "html": ""
+				}
 			]
 				: {});
 					
 			var transform = [
-				{ "<>": "h3", "align": "left", "html": "Nimi: ${nimi}" },
+				{ "<>": "h2", "align": "left", "html": [
+				  {"<>": "b", "html":  "Nimi: ${nimi}" }
+				  ]
+				},
 				{ "<>": "p", "align": "left", "html": "" },
-				{"<>":"h3","align": "left","html":"Augu suurus: ${augu_suurus}"},
+				{"<>":"h4","align": "left","html":"Augu suurus: ${augu_suurus}"},
 				{ "<>": "p", "align": "center", "html": "" },
-				{ "<>": "h3", "align": "left", "html": "Augu intervall: ${augu_intervall}" },
+				{ "<>": "h4", "align": "left", "html": "Augu intervall: ${augu_intervall}" },
 				{ "<>": "p", "align": "center", "html": "" },
-				{ "<>": "h3", "align": "left", "html": "Saadavus: ${saadavus}" },
+				{ "<>": "h4", "align": "left", "html": "Saadavus: ${saadavus}" },
 				{ "<>": "p", "align": "center", "html": "" },
 				linkTransformArray,
-				{ "<>": "h3", "align": "left", "html": "Soovitused: ${soovitused}" },
+				{ "<>": "h4", "align": "left", "html": "Soovitused: ${soovitused}" },
 				{"<>":"p","align":"center","html":""},
-				{ "<>": "h3", "align": "left", "html": "Alternatiivid: ${alternatiivid}" },
+				{ "<>": "h4", "align": "left", "html": "Alternatiivid: ${alternatiivid}" },
 			  ];
 			
 			$('#item_info_modal').json2html(itemRecord[0], transform);
@@ -106,7 +123,7 @@ function modal_link_click(clicked_id) {
 				
 				$('#item_info_modal').json2html(itemRecord[i], transform);
 			}
-			$('#item_info_modal').append("<br><h3 align=\"left\">Tellimiseks täida palun allolev vorm: </h3>" +
+			$('#item_info_modal').append("<br><h3 align=\"left\">Päringu esitamiseks täitke allolev vorm: </h3>" +
 				"<form id=\"order_form\" class=\"pure-form pure-form-aligned\"" +
 				"action=\"order.php\" method=\"post\" target=\"_parent\">" +
 					"<fieldset>" +
@@ -162,11 +179,23 @@ function display_items_from_json_data(result, rowName) {
 		var jsonObject = JSON.parse(itemRecord[i]);
 		//var item_name = jsonObject["nimi"];
 		content += '<div id="box">';
-		var linkTransformArray = (jsonObject.link.length > 7 ? { "<>": "p", "html": [
-                    {"<>": "a", "class": "item-link", "href": "${link}", "target" : "_blank", "html": "Link: ${link}"}
-                ]
-				}
-		: {"<>": "p", "html" : "<br>"});
+		
+		var linkTransformArray = (jsonObject.link.length > 7) ? [
+			{
+				"<>":"p", "class": "abbreviated-link", "html":
+				[
+					{
+						"<>": "span", "html": "Link: "
+					},
+					{
+						"<>":"a","class":"modal-link item-link","href":"${link}","target":"_blank", "html":"${link}"
+					},
+				]
+			},
+			{"<>": "p", "align": "center", "html": "" }
+			]
+			: {"<>": "p", "html" : "<br>"};
+		
 		var transform = 
             [
                 {"<>": "a", "class": "modal_link", "id": "modal_link_${nimi}", "href": "#", "html": [
@@ -185,8 +214,9 @@ function display_items_from_json_data(result, rowName) {
                         linkTransformArray
                     ]
                     },
-					{"<>": "a", "class": "btn", "href": "mailto:info@laomaailm.ee?Subject=${nimi}", "html": [
-						{"<>": "div", "class": "buttoninside", "html": "TELLI"}
+					
+					{"<>": "form", "class": "button-form", "action": "${link_vaata_saadavust}", "target": "_blank", "html": [
+						{"<>": "button", "class": "check-availability-button pure-button pure-button-primary", "html": "VAATA SAADAVUST"}
 					]
 					}
                 ]
@@ -195,10 +225,6 @@ function display_items_from_json_data(result, rowName) {
 		
 		content += json2html.transform(itemRecord[i], transform);
 		content += "</div></div>";
-		//$(rowName).on('click', $("#modal_link_" + item_name), function() {
-		//$(".container-fluid").on('click', $("#modal_link_" + item_name), function() {
-		//	modal_link_click("modal_link_" + item_name);
-		//});
 		
 		var linkIndexInString = content.lastIndexOf("href=\"#\"") + "href=\"#\"".length;
 		var insertableLink = " onclick=\"modal_link_click(this.id)\"";
@@ -215,13 +241,13 @@ function btnLisa_click() {
 function getHashTagFromUri() {
     var regex = new RegExp("\#.*"),
         results = regex.exec(location.href);
-    return (results === null ? "" : results[0]);
+    return (results === null || results[0].length <= 1 ? "" : results[0]);
 }
 
 var indexPage = false;
 $(document).ready(function () {
 	var lastPartOfUri = document.location.href.match(/[^\/]+$/);
-    indexPage = (lastPartOfUri !== null && lastPartOfUri[0].match(/index\.php/g) !== null);
+    indexPage = (lastPartOfUri === null || lastPartOfUri[0].match(/index\.php/g) !== null || lastPartOfUri[0].match(/\#/g) !== null);
 	$('#item_info_modal').on('click', 'button.pure-button', function() {
 		if (validateEmail($("#email").val()) === true) {
 			$('#order_form')[0].submit();
@@ -244,7 +270,7 @@ var incrementInTable = 4, offsetInTable = 12, isPreviousEventComplete = true, is
 			
 			var rows = document.getElementsByClassName("item-row");
 			var rowName = rows[rows.length - 1].id;
-		   if (isPreviousEventComplete) { //&& isDataAvailable) {
+		   if (isPreviousEventComplete && isDataAvailable) {
 				isPreviousEventComplete = false;
 				$.ajax({
 					type: "GET",
@@ -256,8 +282,8 @@ var incrementInTable = 4, offsetInTable = 12, isPreviousEventComplete = true, is
 						offsetInTable += incrementInTable;
 						isPreviousEventComplete = true;
 			
-						if (result === '') { //When data is not available
-							//isDataAvailable = false;
+						if (result === '') {
+							isDataAvailable = false;
 						}
 						else {
 							var rowNumber = rowName.match('[0-9]+');
