@@ -1,8 +1,7 @@
 <?php 
 require './common.php';
 $conn = create_conn();
-
-$nimi = $_POST["nimi"]; 
+$nimi = $_POST["nimi_input"]; 
 $nimi = $conn->real_escape_string($nimi);
 
 $augu_suurus = $_POST["augu_suurus"]; 

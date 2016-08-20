@@ -19,7 +19,8 @@
 	augu suurus: " . $_POST["augu_suurus"] . "<br>
 	augu intervall: " . $_POST["augu_intervall"] . "<br>
 	saadavus: " . $_POST["saadavus"] . "<br>
-	link: " . $_POST["link"] . "<br><br>
+	link: " . $_POST["link"] . "<br>
+	lisainfo tellija poolt: " . $_POST["lisainfo"] . "<br><br>
 	
 	<b>Tellija andmed:</b><br>
 	nimi: " . $_POST["nimi"] . "<br>
@@ -64,7 +65,7 @@
 		}
 	}
 	else {
-		echo '<script type="text/javascript">alert("Viga: tellimuse kinnitus-meili saatmine eba&otilde;nnestus. Palun saada tellimus meiliaadressile info@laomaailm.ee");</script>';
+		echo '<script type="text/javascript">alert("Viga: tellimuse kinnitus-meili saatmine eba&otilde;nnestus. Palun saatke tellimus meiliaadressile info@laomaailm.ee");</script>';
 	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

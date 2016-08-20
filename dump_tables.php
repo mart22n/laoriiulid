@@ -63,11 +63,11 @@ if ($result->num_rows > 0) {
 	echo "Tellimused: <br>";
     while($row = $result->fetch_assoc()) {
 		echo "riiuli_nimi: " . $row["riiuli_nimi"]. "<br>";
-        echo "eesnimi: " . $row["eesnimi"]. "<br>";
+        echo "Tellija nimi: " . $row["nimi"]. "<br>";
 		echo "===<br>";
     }
 } else {
-    echo "Riiulid_pildid: 0 results";
+    echo "Tellimused: 0 results";
 }
 
 

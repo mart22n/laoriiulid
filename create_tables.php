@@ -45,6 +45,7 @@ nimi VARCHAR(30) NOT NULL,
 email VARCHAR(30) NOT NULL,
 telefon VARCHAR(15),
 timestamp TIMESTAMP NOT NULL,
+lisainfo TEXT,
 FOREIGN KEY (riiuli_nimi) REFERENCES Items(riiuli_nimi)
 )";
 
