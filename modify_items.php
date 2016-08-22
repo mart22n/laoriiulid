@@ -10,6 +10,9 @@ else if (isset($_POST["delete_item"])) {
 else if (isset($_POST["delete_all"])) {
 	$action = "delete_all";
 }
+else if(isset($_POST["add_item"])) {
+	$action = "add_item";
+}
 
 $nimi = $_POST["nimi"]; 
 $nimi = $conn->real_escape_string($nimi);
@@ -21,11 +24,11 @@ $augu_intervall = $_POST["augu_intervall"];
 $saadavus = $_POST["saadavus"]; 
 
 $link = $_POST["link"]; 
-$link = "http://" . $link;
+$link = (substr($link, 0, 4) == "http" ? $link : "http://" . $link);
 $link = $conn->real_escape_string($link);
 
 $link_vt = $_POST["link_vaata_saadavust"]; 
-$link_vt = "http://" . $link_vt;
+$link_vt = (substr($link_vt, 0, 4) == "http" ? $link_vt : "http://" . $link_vt);
 $link_vt = $conn->real_escape_string($link_vt);
 
 $hashtag = $_POST["hashtag"];
@@ -42,9 +45,9 @@ switch($action) {
 		$result = $conn->query($sql);
 
 		if (!$result) {
-			echo '<script type="text/javascript">alert("Viga: k&otilde;igi riiulite kustutamine eba&otilde;nnestus! (' . $conn->error . ')");</script>';
+			echo "Viga: kõigi riiulite kustutamine ebaõnnestus! (' . $conn->error . ')";
 		} else {
-			echo "<script type='text/javascript'>alert('Riiulite andmed edukalt kustutatud.');</script>";
+			echo "Riiulite andmed edukalt kustutatud.";
 		}
 		break;
 	case "delete_item":
@@ -52,9 +55,9 @@ switch($action) {
 		$result = $conn->query($sql);
 
 		if (!$result) {
-			echo '<script type="text/javascript">alert("Viga: riiuli kustutamine eba&otilde;nnestus! (' . $conn->error . ')");</script>';
+			echo "Viga: riiuli kustutamine ebaõnnestus! (' . $conn->error . ')";
 		} else {
-			echo "<script type='text/javascript'>alert('Riiuli andmed edukalt kustutatud.');</script>";
+			echo "Riiuli andmed edukalt kustutatud.";
 		}
 		break;
 	case "change_item":
@@ -87,7 +90,7 @@ switch($action) {
 
 		$error = false;
 		if (!$result) {
-			echo '<script type="text/javascript">alert(\'Viga: riiuli info uuendamine eba&otilde;nnestus! (' . $conn->error . '\');</script>';
+			echo "Viga: riiuli info uuendamine ebaõnnestus! (' . $conn->error . ')";
 			$error = true;
 		}
 		
@@ -97,7 +100,7 @@ switch($action) {
 				$result = $conn->query($sql);
 				if (!$result) {
 					$error = true;
-					echo '<script type="text/javascript">alert("' . $conn->error . '");</script>';
+					echo "Viga: riiuli info uuendamine ebaõnnestus! (' . $conn->error . ')";
 				}
 			}
 		}
@@ -107,14 +110,59 @@ switch($action) {
 			$result = $conn->query($sql);
 			if (!$result) {
 				$error = true;
-				echo '<script type="text/javascript">alert("Viga: riiuli piltide kustutamine eba&otilde;nnestus! (' . $conn->error . ')");</script>';
+				echo "Viga: riiuli piltide kustutamine andmebaasist ebaõnnestus! (' . $conn->error . ')";
 			}
 		}
 		if(!$error) {
-			echo "<script type='text/javascript'>alert('Riiuli andmed edukalt uuendatud.');</script>";
+			echo "Riiuli andmed edukalt uuendatud.";
 		}
 		break;
-		//case "add":
+	case "add_item":
+		$nimi_input = $_POST["nimi_input"]; 
+		$nimi_input = $conn->real_escape_string($nimi_input);
+		if(isset($_SESSION["filenames"]) && count($_SESSION["filenames"] > 0)) {
+			$filename = $_SESSION["filenames"][0];
+			$sql = "INSERT INTO Items (
+				nimi,
+				augu_suurus,
+				augu_intervall,
+				saadavus, link,
+				link_vaata_saadavust,
+				hashtag, soovitused,
+				alternatiivid,
+				pildi_nimi) VALUES ('	$nimi_input', '$augu_suurus', '$augu_intervall',
+				'$saadavus', '$link', '$link_vt', '$hashtag', '$soovitused', '$alternatiivid', '$filename')";
+		}
+		else {
+			$sql = "INSERT INTO Items (
+				nimi,
+				augu_suurus,
+				augu_intervall,
+				saadavus,
+				link,
+				link_vaata_saadavust,
+				hashtag,
+				soovitused,
+				alternatiivid) VALUES ('$nimi_input', '	$augu_suurus', '$augu_intervall',
+				'$saadavus', '$link', '$link_vt', '$hashtag', '$soovitused', '$alternatiivid')";
+		}
+	
+		exec_query($conn, $sql);
+		if(strlen($conn->error) > 0) {
+			echo "Viga: riiuli lisamine andmebaasi ebaõnnestus, kontrolli, ega samanimelist riiulit varem lisatud pole. (' . $conn->error . ')";
+			$conn->close();
+			exit_nicely($conn->error, 1);
+		}
+		
+		if(isset($_SESSION["filenames"]) && count($_SESSION["filenames"] > 0)) {
+			foreach($_SESSION["filenames"] as $filename) {
+		
+				$sql = "INSERT INTO Items_pictures (riiuli_nimi, pildi_nimi) VALUES ('$nimi_input', '$filename')";
+				exec_query($conn, $sql);
+			}
+		}
+		echo "Riiul edukalt lisatud.";
+		break;
 }
 
 $conn->close();

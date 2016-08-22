@@ -14,23 +14,13 @@
 			<div style="display: table-row">
 				<div style="width: 750px; display: table-cell;">
 					<h4>Toote lisamiseks, muutmiseks või kustutamiseks vali esmalt toode "Toote nimi" alt:</h4>
-					<form id="admin_form" class="pure-form pure-form-aligned" action="" method="post" target="_self">
+					<iframe name="hiddenFrame" class="hide"></iframe>
+					<form id="admin_form" class="pure-form pure-form-aligned" action="" method="post" target="hiddenFrame">
 						<fieldset>
 							<div id="item_name_div" class="pure-control-group">
 								<label>Toote nimi</label>
+								<input name="nimi_input" id="nimi_input" type="text" placeholder="Toote nimi" style="display: none;" required>
 								<select name="nimi" id="nimi">
-									<option><h3></h3></option>
-									<option><h3>LISA UUS...</h3></option>
-									<?php
-										$conn = create_conn();
-										$sql = "SELECT nimi FROM Items ORDERBY ";
-										$result = exec_query($conn, $sql);
-										if ($result->num_rows >= 1) {
-											while($row = $result->fetch_assoc()) {
-												echo '<option>' . $row['nimi'] . '</option>';
-											}
-										}
-									?>
 								</select>
 							</div>
 
@@ -86,7 +76,7 @@
 							<button id="add_item" name="add_item" value="add_item" type="submit" class="pure-button pure-button-primary"
 									onclick="btnLisa_click();">Lisa</button>
 							<button id="change_item" name="change_item" value="change_item" type="submit" class="pure-button pure-button-primary"
-									onclick="btnChange_click();">Muuda</button>
+									onclick="btnChange_click();">Salvesta muudatused</button>
 							<button id="delete_item" name="delete_item" value="delete_item" type="submit" class="pure-button pure-button-primary"
 									onclick="btnDelete_click();">Kustuta</button>
 							<button id="delete_all" name="delete_all" value="delete_all" type="submit" class="pure-button pure-button-primary"

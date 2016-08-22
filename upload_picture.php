@@ -43,7 +43,9 @@ if ($uploadOk == 0) {
 		}
 		else
 		{
-			array_push($_SESSION["filenames"], $target_file);
+			if(!in_array($target_file, $_SESSION["filenames"])) {
+				array_push($_SESSION["filenames"],$target_file);
+			}
 		}
     } else {
         echo " Üleslaadimine ebaõnnestus.";

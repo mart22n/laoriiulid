@@ -1,6 +1,27 @@
 const LISA_UUS = "LISA UUS...";
 
 $(document).ready(function (e) {
+     $('#nimi').empty();
+     $('#nimi').append($("<option><h3></h3></option>"));
+     $('#nimi').append($("<option>" + LISA_UUS + "</option>"));
+	 $.ajax({
+		type:'POST',
+		url: 'get_item_names.php',
+		success:function(data){
+			var itemNames = data.split("\<br\>");
+			$.each( itemNames, function( index, itemNameJson ) {
+                    if(itemNameJson.length > 0) {                         
+                         var itemName = JSON.parse(itemNameJson);
+                         $('#nimi').append($("<option>" + itemName + "</option>"));
+                    }
+			});
+          }
+	});
+	
+	$("#nimi_input").hide();
+	$("#nimi_input").removeAttr("required");
+	$("#nimi").show();
+	$("#nimi").attr("required", "true");
     $('#imageUploadForm').on('submit',(function(e) {
         e.preventDefault();
 		var form_data = new FormData();
@@ -15,12 +36,13 @@ $(document).ready(function (e) {
             success:function(data){
                 if(data === "success ") {
 					$("#picture_names").append($("#fileToUpload").prop('files')[0].name + "<br>");
-				}
-				else
-				{
-					alert(data);
-				}
-				$("#upload-file-btn").attr("src", "images/icon_valipilt.png");
+                         $("#delete_pictures_button").prop("disabled", false);
+               }
+               else
+               {
+                    alert(data);
+               }
+               $("#upload-file-btn").attr("src", "images/icon_valipilt.png");
             },
             error: function(data){
                 alert("Error" + data);
@@ -227,38 +249,118 @@ function display_items_from_json_data(result, rowName) {
 	$(rowName).append(content);
 }
 
-function btnLisa_click() {
-	$("#admin_form").attr("action", "add_item.php");
-	$("#admin_form").submit();
-	$("#nimi_input").remove();
-	$("#nimi").show();
-	 $("#picture_names").html("&Uuml;leslaetud pildid: <br>");
+function requiredFieldsFilled() {
+     var requiredFilled = true;
+     $( ':input[required]', $("#admin_form") ).each( function () {
+          if ( this.value.trim() === '' ) {
+              requiredFilled = false;
+              return false;
+          }
+     });
+     return requiredFilled;
 }
 
+function btnLisa_click() {
+     if(requiredFieldsFilled()) {
+          var form_data = $('#admin_form').serialize();
+          form_data += "&add_item=add_item";
+          $.ajax({
+          type: "POST",
+          url:  'modify_items.php',
+          data: form_data,
+           processData: false,
+               success: function (result) {
+                    alert(result);
+                    if(result.substring(0, 4) !== "Viga")
+                    {
+                         window.location.reload(true); 
+                    }
+               },
+               error: function (error) {
+                    alert(error);
+               }	
+          });
+     }
+}
+     
 function btnChange_click() {
-	$("#admin_form").attr("action", "modify_items.php");
-	$("#admin_form").submit();
+     if(requiredFieldsFilled()) {
+          var form_data = $('#admin_form').serialize();
+          form_data += "&change_item=change_item";
+          $.ajax({
+          type: "POST",
+          url:  'modify_items.php',
+          data: form_data,
+           processData: false,
+               success: function (result) {
+                    alert(result);
+                    if(result.substring(0, 4) !== "Viga")
+                    {
+                         window.location.reload(true); 
+                    }
+               },
+               error: function (error) {
+                    alert(error);
+               }	
+          });
+     }
 }
 
 function btnDelete_click() {
-	$("#admin_form").attr("action", "modify_items.php");
-	$("#admin_form").submit();
+	var form_data = $('#admin_form').serialize();
+     form_data += "&delete_item=delete_item";
+	$.ajax({
+	type: "POST",
+	url:  'modify_items.php',
+	data: form_data,
+	 processData: false,
+		 success: function (result) {
+               alert(result);
+               if(result.substring(0, 4) !== "Viga")
+               {
+                    window.location.reload(true); 
+               }
+          },
+          error: function (error) {
+               alert(error);
+          }	
+	});
 }
 
 function btnDeleteAll_click() {
-	return confirm('Oled kindel, et soovid kustutada andmebaasist kõik tooted? (tellimuste info jääb alles)');
+	if(confirm('Oled kindel, et soovid kustutada andmebaasist kõik tooted? (tellimuste info jääb alles)')) {   
+     var form_data = $('#admin_form').serialize();
+          form_data += "&delete_all=delete_all";
+          $.ajax({
+          type: "POST",
+          url:  'modify_items.php',
+          data: form_data,
+           processData: false,
+                success: function (result) {
+                    alert(result);
+                    if(result.substring(0, 4) !== "Viga")
+                    {
+                         window.location.reload(true); 
+                    }
+               },
+               error: function (error) {
+                    alert(error);
+               }	
+          });
+     }
 }
 
 function delete_pictures() {
 	$.ajax({
 	type: "POST",
 	url:  'delete_pictures.php',
-	data: { 'nimi': $('#nimi').val() },
+	data: { 'nimi': $( "#nimi option:selected" ).text() },
 		success: function (result) {
 			$("#delete_pictures_button").prop("disabled", true);
 			$("#picture_names").html("&Uuml;leslaetud pildid: <br>");
 		},
 		error: function (error) {
+               alert(error);
 		}	
 	});
 }
@@ -281,7 +383,7 @@ $(document).ready(function () {
 			alert('e-mailiaadress ei vasta nõuetele!');
 		}
 	});
-	
+	$('#add_item').prop("disabled", true);
 	$('#change_item').prop("disabled", true);
 	$('#delete_item').prop("disabled", true);
 	$("#delete_pictures_button").prop("disabled", true);
@@ -289,7 +391,7 @@ $(document).ready(function () {
 
 $('#nimi').change(function() {
 	$("#picture_names").html("&Uuml;leslaetud pildid: <br>");
-	var name = $('#nimi').val();
+	var name = $( "#nimi option:selected" ).text();
 	if(name !== LISA_UUS && name !== "") {
 		$('#add_item').prop("disabled", true);
 		$('#change_item').prop("disabled", false);
@@ -299,7 +401,9 @@ $('#nimi').change(function() {
 	else if(name === LISA_UUS)
 	{
 		$("#nimi").hide();
-		$("#item_name_div").append("<input name=\"nimi_input\" id=\"nimi_input\" type=\"text\" placeholder=\"Toote nimi\" required>");
+		$("#nimi").removeAttr("required");
+		$("#nimi_input").show();
+		$("#nimi_input").attr("required", "true");
 		$('#add_item').prop("disabled", false);
 		$('#change_item').prop("disabled", true);
 		$('#delete_item').prop("disabled", true);
@@ -334,8 +438,8 @@ function fillFormFieldsFromItemRecord(record) {
 	$('#augu_suurus').val(jsonObject.augu_suurus);
 	$('#augu_intervall').val(jsonObject.augu_intervall);
 	$('#saadavus').val(jsonObject.saadavus);
-	$('#link').val(jsonObject.link);
-	$('#link_vaata_saadavust').val(jsonObject.link_vaata_saadavust);
+	$('#link').val(jsonObject.link.indexOf("http") >= 0 ? jsonObject.link.substring(7) : jsonObject.link);
+	$('#link_vaata_saadavust').val(jsonObject.link_vaata_saadavust.indexOf("http") >= 0 ? jsonObject.link_vaata_saadavust.substring(7) : jsonObject.link_vaata_saadavust);
 	$('#hashtag').val(jsonObject.hashtag);
 	$('#soovitused').val(jsonObject.soovitused);
 	$('#alternatiivid').val(jsonObject.alternatiivid);
@@ -344,7 +448,7 @@ function fillFormFieldsFromItemRecord(record) {
 	for(i = 1; i < itemData.length - 1; ++i)
 	{
 		jsonObject = JSON.parse(itemData[i]);
-		$("#picture_names").append(jsonObject.pildi_nimi + "<br>");	
+		$("#picture_names").append(jsonObject.pildi_nimi.substring(jsonObject.pildi_nimi.lastIndexOf("/") + 1) + "<br>");	
 	}
 	
 	$("#delete_pictures_button").prop("disabled", itemData.length < 3);

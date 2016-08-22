@@ -7,7 +7,7 @@ $sql = "SELECT nimi, augu_suurus, augu_intervall, saadavus, link, link_vaata_saa
 
 $result = exec_query($conn, $sql);
 
-if ($result->num_rows == 1) {
+if ($result->num_rows >= 1) {
 	$row = $result->fetch_assoc();
     echo json_encode($row);
     echo '<br>';
